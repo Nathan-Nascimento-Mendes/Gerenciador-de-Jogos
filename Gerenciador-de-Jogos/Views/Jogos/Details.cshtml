@@ -1,0 +1,200 @@
+﻿@model GerenciadorJogos.Models.Jogo
+
+@{
+    ViewData["Title"] = "Detalhes do Jogo";
+}
+
+<style>
+    body {
+        background-color: #0b1c26;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #e0e0e0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .detalhes-container {
+        text-align: center;
+        padding: 40px;
+    }
+
+    .titulo-pagina {
+        color: #00ffff;
+        text-shadow: 0 0 10px #00ffff;
+        font-size: 2.5em;
+        margin-bottom: 30px;
+    }
+
+    .detalhes-card {
+        background-color: #111;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        padding: 20px;
+        width: 60%;
+        margin: 0 auto;
+        border: 1px solid #00ffff;
+    }
+
+    .titulo-secao {
+        color: #00ffff;
+        margin-bottom: 10px;
+    }
+
+    .info-capa-container {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .info-jogo {
+        flex: 1;
+        min-width: 250px;
+        text-align: left;
+    }
+
+        .info-jogo p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+    .imagem-container {
+        flex: 1;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .imagem-capa {
+        width: 100%;
+        max-width: 500px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px #00ffff;
+        border: 2px solid #00ffff;
+    }
+
+    .botoes {
+        margin-top: 20px;
+    }
+
+    .btn-editar,
+    .btn-voltar {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 10px;
+        font-weight: bold;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-editar {
+        background-color: #00bfff;
+        color: #fff;
+    }
+
+        .btn-editar:hover {
+            background-color: #009acd;
+        }
+
+    .btn-voltar {
+        background-color: #444;
+        color: #fff;
+    }
+
+        .btn-voltar:hover {
+            background-color: #666;
+        }
+
+    .lista {
+        list-style: none;
+        padding: 0;
+    }
+
+        .lista li {
+            margin: 5px 0;
+        }
+
+    /* --- 🔹 RESPONSIVIDADE --- */
+    @@media (max-width: 768px) {
+        .detalhes-card {
+            width: 90%;
+            padding: 15px;
+        }
+
+        .info-capa-container {
+            flex-direction: column;
+        }
+
+        .titulo-pagina {
+            font-size: 2em;
+        }
+
+        .imagem-capa {
+            max-width: 350px;
+        }
+
+        .btn-editar,
+        .btn-voltar {
+            width: 80%;
+            font-size: 1em;
+        }
+    }
+</style>
+
+<div class="detalhes-container">
+    <h1 class="titulo-pagina">Detalhes do Jogo</h1>
+
+    <div class="detalhes-card">
+        <h2 class="titulo-secao">Jogo</h2>
+        <hr />
+
+        <div class="info-capa-container">
+            <div class="info-jogo">
+                <p><strong>Título:</strong> @Model.Titulo</p>
+                <p><strong>Ano:</strong> @Model.Ano</p>
+
+                <p><strong>Plataformas:</strong></p>
+                <ul class="lista">
+                    @if (Model.JogoPlataformas != null && Model.JogoPlataformas.Any())
+                    {
+                        foreach (var jp in Model.JogoPlataformas)
+                        {
+                            <li>
+                                <span class="nome-plataforma">@jp.Plataforma.Nome</span>
+                                <span class="preco-plataforma">— R$ @jp.Valor.ToString("F2")</span>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li>Não informado</li>
+                    }
+                </ul>
+
+                <p><strong>Gêneros:</strong></p>
+                <ul class="lista">
+                    @if (Model.JogoGeneros != null && Model.JogoGeneros.Any())
+                    {
+                        foreach (var jg in Model.JogoGeneros)
+                        {
+                            <li>@jg.Genero.Nome</li>
+                        }
+                    }
+                    else
+                    {
+                        <li>Não informado</li>
+                    }
+                </ul>
+            </div>
+
+            <div class="imagem-container">
+                <img src="@Model.Capa" alt="@Model.Titulo" class="imagem-capa" />
+            </div>
+        </div>
+
+        <div class="botoes">
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn-editar">Editar</a>
+            <a asp-action="Index" class="btn-voltar">Voltar</a>
+        </div>
+    </div>
+</div>

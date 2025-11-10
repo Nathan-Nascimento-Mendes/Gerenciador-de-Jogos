@@ -1,0 +1,245 @@
+﻿@model GerenciadorJogos.Models.Jogo
+
+@{
+    ViewData["Title"] = "Adicionar Jogo";
+}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+
+<style>
+    body {
+        background-color: #0a0f1a;
+        color: #e0e0e0;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    h1 {
+        text-align: center;
+        color: #00ffff;
+        text-shadow: 0 0 12px #00ffff;
+        margin-top: 40px;
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
+
+    .neon-box {
+        background-color: #111827;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 35px 45px;
+        border-radius: 10px;
+        border: 1px solid #00ffff66;
+        box-shadow: 0 0 15px #00ffff33, inset 0 0 10px #00ffff22;
+    }
+
+    label {
+        font-weight: 500;
+        color: #00ffff;
+        text-shadow: 0 0 5px #00ffffaa;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .form-control {
+        background-color: #1a2130;
+        border: 1px solid #00ffff55;
+        color: #e0e0e0;
+        border-radius: 6px;
+        padding: 10px;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+            background-color: #0e1625;
+        }
+
+        .form-control:hover {
+            border-color: #00ffffaa;
+            box-shadow: 0 0 6px #00ffff55;
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .section-box {
+        border: 1px solid #00ffff33;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 15px;
+        background-color: #0e1625;
+    }
+
+        .section-box h3 {
+            color: #00ffff;
+            text-shadow: 0 0 8px #00ffffaa;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+    }
+
+    .form-check-label {
+        color: #cce7ff;
+        margin-left: 5px;
+        flex: 1;
+    }
+
+    input[type="checkbox"] {
+        accent-color: #00ffff;
+        transform: scale(1.2);
+        margin-right: 10px;
+    }
+
+    .form-check .form-control {
+        width: 120px;
+        margin-left: 10px;
+    }
+
+    .text-danger {
+        color: #ff6666;
+        font-size: 0.9em;
+        display: block;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    .btn-success {
+        background-color: #00bfff;
+        border: none;
+        color: #fff;
+        padding: 10px 25px;
+        border-radius: 6px;
+        transition: 0.3s;
+        box-shadow: 0 0 10px #00bfff;
+    }
+
+        .btn-success:hover {
+            background-color: #00ffff;
+            box-shadow: 0 0 15px #00ffff;
+        }
+
+        .btn-success:focus {
+            animation: glow 1s infinite alternate;
+        }
+
+    @@keyframes glow {
+        from {
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        to {
+            box-shadow: 0 0 20px #00ffff;
+        }
+    }
+
+    .btn-secondary {
+        background-color: #2e2e2e;
+        color: #fff;
+        padding: 10px 25px;
+        border-radius: 6px;
+        transition: 0.3s;
+        border: none;
+        margin-left: 10px;
+    }
+
+        .btn-secondary:hover {
+            background-color: #444;
+            box-shadow: 0 0 10px #00ffff55;
+        }
+
+    .form-footer {
+        text-align: center;
+        margin-top: 25px;
+    }
+</style>
+
+<h1>Adicionar Jogo</h1>
+
+<div class="neon-box">
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="Titulo" class="control-label"></label>
+            <input asp-for="Titulo" class="form-control" placeholder="Digite o título do jogo" />
+            <span asp-validation-for="Titulo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Ano" class="control-label"></label>
+            <input asp-for="Ano" class="form-control" placeholder="Ex: 2024" />
+            <span asp-validation-for="Ano" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Capa" class="control-label"></label>
+            <input asp-for="Capa" class="form-control" placeholder="URL da imagem da capa" />
+            <span asp-validation-for="Capa" class="text-danger"></span>
+        </div>
+
+        <div class="form-group section-box">
+            <h3>Plataformas e Valor</h3>
+            <span class="text-danger">@Html.ValidationMessage("Plataformas")</span>
+
+            @foreach (var p in ViewBag.Plataformas)
+            {
+                <div class="form-check">
+                    <div>
+                        <input type="checkbox" name="plataformaIds" value="@p.Id" class="form-check-input" />
+                        <label class="form-check-label">@p.Nome</label>
+                    </div>
+
+                    <!-- Campo ajustado para aceitar ponto ou vírgula -->
+                    <input name="valores[@p.Id]"
+                           type="text"
+                           inputmode="decimal"
+                           pattern="[0-9]+([.,][0-9]{1,2})?"
+                           placeholder="Ex: 19,99"
+                           class="form-control" />
+                </div>
+            }
+
+            <div class="form-group section-box">
+                <h3>Gêneros</h3>
+                <span class="text-danger">@Html.ValidationMessage("Generos")</span>
+
+                @foreach (var genero in ViewBag.Generos)
+                {
+                    <div class="form-check">
+                        <input type="checkbox" name="generoIds" value="@genero.Id" class="form-check-input" />
+                        <label class="form-check-label">@genero.Nome</label>
+                    </div>
+                }
+            </div>
+
+            <div class="form-footer">
+                <button type="submit" class="btn btn-success">Salvar</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $("form").on("submit", function (e) {
+            const plataformasMarcadas = $("input[name='plataformaIds']:checked").length;
+            if (plataformasMarcadas === 0) {
+                alert("⚠️ Selecione pelo menos uma plataforma antes de salvar.");
+                e.preventDefault();
+            }
+        });
+    </script>
+}
