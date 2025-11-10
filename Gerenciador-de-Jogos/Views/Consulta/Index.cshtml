@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Relatórios / Consultas LINQ";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>Escolha um relatório:</p>
+
+<div class="list-group">
+    <a class="list-group-item list-group-item-action" asp-controller="Consulta" asp-action="JogosPlataformas">1) Jogos e Plataformas</a>
+    <a class="list-group-item list-group-item-action" asp-controller="Consulta" asp-action="JogosPorAno">2) Jogos por Ano (Qtd e Média)</a>
+    <a class="list-group-item list-group-item-action" asp-controller="Consulta" asp-action="AnosComMaisDeUmJogo">3) Anos (>2010) com mais de 1 jogo</a>
+</div>

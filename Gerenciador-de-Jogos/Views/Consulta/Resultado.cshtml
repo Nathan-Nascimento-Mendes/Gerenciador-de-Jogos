@@ -1,0 +1,54 @@
+﻿@model IEnumerable<System.Collections.Generic.IDictionary<string, object>>
+@{
+    ViewData["Title"] = ViewBag.Titulo ?? "Resultado da Consulta";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p class="text-muted">Nenhum dado encontrado.</p>
+}
+else
+{
+    var primeiro = Model.First();
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                @foreach (var chave in primeiro.Keys)
+                {
+                    <th>@chave</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var linha in Model)
+            {
+                <tr>
+                    @foreach (var chave in primeiro.Keys)
+                    {
+                        <td>
+                            @{
+                                object? valor;
+                                linha.TryGetValue(chave, out valor);
+                                if (valor == null)
+                                {
+                                    <text></text>
+                                    ;
+                                }
+                                else
+                                {
+
+                                    <text>@valor</text>
+                                    ;
+                                }
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a class="btn btn-secondary" asp-controller="Consulta" asp-action="Index">Voltar</a>
